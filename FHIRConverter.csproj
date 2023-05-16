@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FHIR-Converter\src\Microsoft.Health.Fhir.Liquid.Converter\Microsoft.Health.Fhir.Liquid.Converter.csproj" />
-    <ProjectReference Include="..\FHIR-Converter\src\Microsoft.Health.Fhir.TemplateManagement\Microsoft.Health.Fhir.TemplateManagement.csproj" />
-    <ProjectReference Include="..\FHIR-Converter\src\Microsoft.Health.Fhir.Liquid.Converter.Tool\Microsoft.Health.Fhir.Liquid.Converter.Tool.csproj" />
+    <ProjectReference Include="..\Microsoft.Health.Fhir.Liquid.Converter\Microsoft.Health.Fhir.Liquid.Converter.csproj" />
+    <ProjectReference Include="..\Microsoft.Health.Fhir.TemplateManagement\Microsoft.Health.Fhir.TemplateManagement.csproj" />
+    <ProjectReference Include="..\Microsoft.Health.Fhir.Liquid.Converter.Tool\Microsoft.Health.Fhir.Liquid.Converter.Tool.csproj" />
   </ItemGroup>
 
 </Project>
