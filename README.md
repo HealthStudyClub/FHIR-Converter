@@ -22,13 +22,17 @@ docker build -t fhirconverter-image -f Dockerfile .
 docker run -p 5001:5000 fhirconverter-image
 ```
 
+**About custom templates**: If you want to use custom [Liquid](https://shopify.github.io/liquid/) templates, you'll need to make them accessible in your docker image and point the ENV var `TEMPLATE_ROOT_DIR` to that folder. If you don't want to use custom templates, you can leave the ENV var `TEMPLATE_ROOT_DIR` empty and the service will use the default templates from the Microsoft FHIR Converter. 
+
+You can find more information about custom templates in the [Microsoft FHIR Converter documentation](https://github.com/microsoft/FHIR-Converter#hl7v2-to-fhir-conversion-templates).
+
 ## Usage
 
 1. **Prepare Your Data**: Make sure your data is in one of the supported formats (HL7v2, CCDA, JSON, FHIR STU3).
 
 2. **Send a Request**: Send a POST request to our FHIR server at the endpoint `https://your-fhir-server/$convert-data`. 
 
-   The body of the request should be formatted according to the [FHIR Parameters](https://build.fhir.org/parameters.html) resource and include the input data, the input data type and the root template. Here's an example:
+   The body of the request should be formatted according to the [FHIR Parameters](https://build.fhir.org/parameters.html) resource and include the input data, the input data type and the [root template](https://github.com/microsoft/FHIR-Converter#supported-parameters). Here's an example:
 
 **Sample request for HL7v2 input data:**
 ```json
