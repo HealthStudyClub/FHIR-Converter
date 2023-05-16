@@ -1,25 +1,19 @@
-using Firemetrics.Fhir.Converter;
 using System.Text.Json;
+using UME.Fhir.Converter;
 
-
-var appName = "Firemetrics.Fhir.Converter";
-var templateRootDir = Environment.GetEnvironmentVariable("TEMPLATE_ROOT_DIR");
-if (templateRootDir == null)
-{
-    templateRootDir = "templates";
-}
-
-var templateDirs = new Dictionary<string, string>
-{
-    { "Hl7v2", Path.Combine(templateRootDir, "Hl7v2") },
-    { "Ccda", Path.Combine(templateRootDir, "Ccda") },
-    { "Json", Path.Combine(templateRootDir, "Json") },
-    { "Fhir", Path.Combine(templateRootDir, "Fhir") },
-};
+var appName = "UME.Fhir.Converter";
 
 // nice rececipes https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis?view=aspnetcore-7.0
 var builder = WebApplication.CreateBuilder(args);
+
+// Configure logging
+builder.Logging.AddConsole();
+builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Information);
+
 var app = builder.Build();
+
+// Get a logger
+var logger = app.Services.GetRequiredService<ILogger<Program>>();
 
 app.Use(async (context, next) =>
 {
@@ -32,7 +26,12 @@ app.Use(async (context, next) =>
 });
 
 app.MapGet("/", () => {
-    return appName; 
+    return $"{appName}"; 
+});
+
+app.MapGet("/probe", (HttpContext context) => {
+    logger.LogInformation($"Liveness probe was called from {context.Connection.RemoteIpAddress}");
+    return $"alive at {DateTimeOffset.Now.ToString()}"; 
 });
 
 /**
@@ -48,14 +47,14 @@ app.MapPost("/$convert-data", async (HttpContext context) =>
 
         var parsedParameters = new ParsedConvertParameters(
                 inputData: parameters.GetParameter("inputData"),
-                inputDataType: parameters.GetParameter("inputDataType"),
+                inputDataType: parameters.GetParameter("inputDataType").ToLower(),
                 rootTemplate: parameters.GetParameter("rootTemplate")
             );
 
             // convert to JSON FHIR
             var converterResult = ConverterLogicHandler.Convert(
                 inputContent: parsedParameters.inputData, 
-                templateDirectory: templateDirs[parsedParameters.inputDataType], 
+                inputDataType: parsedParameters.inputDataType, 
                 rootTemplate: parsedParameters.rootTemplate, 
                 isTraceInfo: false);
 

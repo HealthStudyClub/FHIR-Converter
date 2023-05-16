@@ -1,4 +1,4 @@
-namespace Firemetrics.Fhir.Converter
+namespace UME.Fhir.Converter
 {
     public class ParameterNotFoundException : Exception
     {

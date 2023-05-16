@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace Firemetrics.Fhir.Converter
+namespace UME.Fhir.Converter
 {
     public static class HttpContextExtensions
     {
