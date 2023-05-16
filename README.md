@@ -10,6 +10,18 @@ This service is built using the [Microsoft FHIR Converter](https://github.com/mi
 
 The primary benefit of this service is the standardization of your healthcare data. If your existing data is in different formats (HL7v2, CCDA, JSON, FHIR STU3), you can convert it into the FHIR R4 format. This enables you to maintain a single, consistent data format across your systems, simplifying data management and interoperability.
 
+## Build and Run
+
+To build and run this service, you'll need to have [Docker](https://www.docker.com/) installed on your machine. Once you've installed Docker, you can build and run the service using the following commands:
+
+```bash
+docker build -t fhirconverter-image -f Dockerfile .
+```
+
+```bash
+docker run -p 5001:5000 fhirconverter-image
+```
+
 ## Usage
 
 1. **Prepare Your Data**: Make sure your data is in one of the supported formats (HL7v2, CCDA, JSON, FHIR STU3).
