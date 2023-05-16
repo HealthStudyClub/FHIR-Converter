@@ -47,7 +47,7 @@ app.MapPost("/$convert-data", async (HttpContext context) =>
 
         var parsedParameters = new ParsedConvertParameters(
                 inputData: parameters.GetParameter("inputData"),
-                inputDataType: parameters.GetParameter("inputDataType").ToLower(),
+                inputDataType: parameters.GetParameter("inputDataType"),
                 rootTemplate: parameters.GetParameter("rootTemplate")
             );
 

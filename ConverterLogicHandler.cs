@@ -10,14 +10,6 @@ namespace UME.Fhir.Converter {
     internal static class ConverterLogicHandler
     {
 
-        private static readonly Dictionary<string, DataType> SupportedInputFormats = new Dictionary<string, DataType> 
-        { 
-            { "hl7v2", DataType.Hl7v2 },
-            { "ccda", DataType.Ccda },
-            { "json", DataType.Json },
-            { "fhir", DataType.Fhir }
-        };
-
         private const string MetadataFileName = "metadata.json";
         private static readonly ProcessorSettings DefaultProcessorSettings = new ProcessorSettings();
 
@@ -27,10 +19,10 @@ namespace UME.Fhir.Converter {
             x => GetDataType(x),
             x => x
         );
-        
-        private static readonly Dictionary<DataType, ITemplateProvider> TemplateProviders = SupportedInputFormats.ToDictionary(
-            x => x.Value,
-            x => (ITemplateProvider)new TemplateProvider(TemplateDirs[x.Value], x.Value)
+       
+        private static readonly Dictionary<DataType, ITemplateProvider> TemplateProviders = TemplateDirs.ToDictionary(
+            x => x.Key,
+            x => (ITemplateProvider)new TemplateProvider(TemplateDirs[x.Key], x.Key)
         );
 
         // prepare and cache processors
@@ -45,18 +37,15 @@ namespace UME.Fhir.Converter {
         
         internal static ConverterResult Convert(string inputContent, string inputDataType, string rootTemplate, bool isTraceInfo)
         {
-            if (SupportedInputFormats.ContainsKey(inputDataType)) 
+            if (Enum.TryParse<DataType>(inputDataType, ignoreCase: true, out var dataType))
             {
-                var dataType = SupportedInputFormats[inputDataType];
                 var templateProvider = TemplateProviders[dataType];
                 var traceInfo = CreateTraceInfo(dataType, isTraceInfo);
                 var resultString = Processors[dataType].Convert(inputContent, rootTemplate, templateProvider, traceInfo);
                 return new ConverterResult(ProcessStatus.OK, resultString, traceInfo);
             }
-            else 
-            {
-                throw new NotImplementedException($"The conversion from data type '{inputDataType}' to FHIR is not supported");
-            }
+            
+            throw new NotImplementedException($"The conversion from data type '{inputDataType}' to FHIR is not supported");
         }
 
         private static DataType GetDataType(string templateDirectory)
