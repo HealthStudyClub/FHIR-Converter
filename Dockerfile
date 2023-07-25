@@ -5,9 +5,9 @@ WORKDIR /App
 RUN git clone https://github.com/microsoft/FHIR-Converter.git
 
 # Build MS FHIR-Converter
-WORKDIR /App/FHIR-Converter
-RUN dotnet restore
-RUN dotnet publish -c Release -o out
+#WORKDIR /App/FHIR-Converter
+#RUN dotnet restore
+#RUN dotnet publish -c Release -o out
 
 # Copy our FHIRConverter into MS FHIR-Converter
 WORKDIR /App
@@ -18,6 +18,8 @@ COPY ./Program.cs ./FHIR-Converter/src/UME.Fhir.Converter/Program.cs
 COPY ./HttpContextExtensions.cs ./FHIR-Converter/src/UME.Fhir.Converter/HttpContextExtensions.cs
 COPY ./ConverterLogicHandler.cs ./FHIR-Converter/src/UME.Fhir.Converter/ConverterLogicHandler.cs
 COPY ./appsettings.json ./FHIR-Converter/src/UME.Fhir.Converter/appsettings.json
+# fixes some CI bug with nuget authorization (see https://stackoverflow.com/a/76662452)
+COPY ./nuget.config ./FHIR-Converter/nuget.config
 
 # Build our FHIRConverter
 WORKDIR /App/FHIR-Converter/src/UME.Fhir.Converter
