@@ -3,6 +3,7 @@ using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models.Hl7v2;
 using Microsoft.Health.Fhir.Liquid.Converter.Processors;
 using Microsoft.Health.Fhir.Liquid.Converter.Tool.Models;
+using Microsoft.Health.Fhir.Liquid.Converter.Telemetry;
 using System.Text.Json;
 
 namespace UME.Fhir.Converter {
@@ -29,10 +30,10 @@ namespace UME.Fhir.Converter {
         // seems to be thread-safe, see:
         // https://github.com/microsoft/FHIR-Converter/blob/main/src/Microsoft.Health.Fhir.Liquid.Converter/Processors/BaseProcessor.cs#L92
         private static readonly Dictionary<DataType, IFhirConverter> Processors = new Dictionary<DataType, IFhirConverter> {
-            { DataType.Hl7v2, new Hl7v2Processor(DefaultProcessorSettings) },
-            { DataType.Ccda, new CcdaProcessor(DefaultProcessorSettings) },
-            { DataType.Json, new JsonProcessor(DefaultProcessorSettings) },
-            { DataType.Fhir, new FhirProcessor(DefaultProcessorSettings) }
+            { DataType.Hl7v2, new Hl7v2Processor(DefaultProcessorSettings, new ConsoleTelemetryLogger()) },
+            { DataType.Ccda, new CcdaProcessor(DefaultProcessorSettings, new ConsoleTelemetryLogger()) },
+            { DataType.Json, new JsonProcessor(DefaultProcessorSettings, new ConsoleTelemetryLogger()) },
+            { DataType.Fhir, new FhirProcessor(DefaultProcessorSettings, new ConsoleTelemetryLogger()) }
         };
         
         internal static ConverterResult Convert(string inputContent, string inputDataType, string rootTemplate, bool isTraceInfo)
