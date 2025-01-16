@@ -1,5 +1,7 @@
 # FHIR Data Conversion Web Service
 
+[![Affiliated with RTG WisPerMed](https://img.shields.io/badge/Affiliated-RTG%202535%20WisPerMed-blue)](https://wispermed.org/)
+
 Our FHIR Data Conversion Web Service is designed to implement the `$convert-data` custom FHIR (Fast Healthcare Interoperability Resources) operation, enabling the conversion of HL7v2, CCDA, JSON, and FHIR STU3 into FHIR R4 format.
 
 ## About
